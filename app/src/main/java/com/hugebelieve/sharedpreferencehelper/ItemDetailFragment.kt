@@ -1,13 +1,20 @@
 package com.hugebelieve.sharedpreferencehelper
 
+import android.content.DialogInterface
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
+import android.support.design.widget.TextInputEditText
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.hugebelieve.sharedpreferencehelper.dummy.DummyContent
+import com.hugebelieve.sharedpreferencelibrary.SharedPref
 import kotlinx.android.synthetic.main.activity_item_detail.*
-import kotlinx.android.synthetic.main.item_detail.view.*
+import kotlinx.android.synthetic.main.input_dialog.*
+
 
 /**
  * A fragment representing a single Item detail screen.
@@ -41,10 +48,12 @@ class ItemDetailFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.item_detail, container, false)
 
         // Show the dummy content as text in a TextView.
+        var rootID = "";
         item?.let {
-            rootView.item_detail.text = it.details
+            val description = SharedPref(rootView.context).getDataString(it.id,"Shared preference is empty! Click on message button.")
+            rootView.findViewById<TextView>(R.id.item_detail).text = description
+            rootID = it.id
         }
-
         return rootView
     }
 

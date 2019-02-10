@@ -2,9 +2,12 @@ package com.hugebelieve.sharedpreferencehelper
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
+import android.support.design.widget.TextInputEditText
+import android.support.v4.app.FragmentManager
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.hugebelieve.sharedpreferencelibrary.SharedPref
 import kotlinx.android.synthetic.main.activity_item_detail.*
 
 /**
@@ -15,14 +18,40 @@ import kotlinx.android.synthetic.main.activity_item_detail.*
  */
 class ItemDetailActivity : AppCompatActivity() {
 
+
+    private lateinit var fragment: ItemDetailFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_detail)
         setSupportActionBar(detail_toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        fab.setOnClickListener { it ->
+            val builder = AlertDialog.Builder(it.context)
+            val mView = layoutInflater.inflate(R.layout.input_dialog, null)
+            val prefMessage = mView.findViewById<TextInputEditText>(R.id.pref_message)
+            builder.setView(mView)
+                // Add action buttons
+                .setPositiveButton("Submit"
+                ) { dialog, id ->
+                    if(!prefMessage.text.toString().isEmpty()){
+                        SharedPref(baseContext).putData(intent.getStringExtra(ItemDetailFragment.ARG_ITEM_ID), prefMessage.text.toString())
+
+                        fragment = ItemDetailFragment().apply {
+                            arguments = Bundle().apply {
+                                putString(ItemDetailFragment.ARG_ITEM_ID,
+                                    intent.getStringExtra(ItemDetailFragment.ARG_ITEM_ID))
+                            }
+                        }
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.item_detail_container, fragment)
+                            .commit()
+                    }
+                }
+                .setNegativeButton("Cancel"
+                ) { dialog, id ->
+                    dialog.cancel()
+                }
+            builder.create().show()
         }
 
         // Show the Up button in the action bar.
@@ -40,7 +69,7 @@ class ItemDetailActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            val fragment = ItemDetailFragment().apply {
+            fragment = ItemDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString(ItemDetailFragment.ARG_ITEM_ID,
                             intent.getStringExtra(ItemDetailFragment.ARG_ITEM_ID))
