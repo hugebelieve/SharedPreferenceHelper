@@ -1,4 +1,4 @@
-# Shared Prefrence Helper
+# Shared Preference Helper
 An Android library which helps you set and get shared preferences with easy functions, and without worrying about commit() and apply() usage.
 
 Include the following line of code in your app gradle file
