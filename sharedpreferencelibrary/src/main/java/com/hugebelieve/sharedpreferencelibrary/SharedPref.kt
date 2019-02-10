@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import org.json.JSONObject
 
-class SharedPref(var currentContext: Context) {
+class SharedPref(currentContext: Context) {
 
     var SharedStringCode = currentContext.applicationContext.packageName + "_shared_private_preference";
     val sharedPref: SharedPreferences = currentContext.applicationContext.getSharedPreferences(SharedStringCode, Context.MODE_PRIVATE)
