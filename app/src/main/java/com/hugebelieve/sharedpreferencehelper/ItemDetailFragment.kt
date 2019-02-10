@@ -50,7 +50,9 @@ class ItemDetailFragment : Fragment() {
         // Show the dummy content as text in a TextView.
         var rootID = "";
         item?.let {
+            //Here we are retrieving data from Shared Pref
             val description = SharedPref(rootView.context).getDataString(it.id,"Shared preference is empty! Click on message button.")
+
             rootView.findViewById<TextView>(R.id.item_detail).text = description
             rootID = it.id
         }

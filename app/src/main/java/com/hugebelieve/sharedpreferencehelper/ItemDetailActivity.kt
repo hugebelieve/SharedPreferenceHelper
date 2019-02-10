@@ -29,12 +29,14 @@ class ItemDetailActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(it.context)
             val mView = layoutInflater.inflate(R.layout.input_dialog, null)
             val prefMessage = mView.findViewById<TextInputEditText>(R.id.pref_message)
+            val uniqueKey = intent.getStringExtra(ItemDetailFragment.ARG_ITEM_ID);
             builder.setView(mView)
                 // Add action buttons
                 .setPositiveButton("Submit"
                 ) { dialog, id ->
                     if(!prefMessage.text.toString().isEmpty()){
-                        SharedPref(baseContext).putData(intent.getStringExtra(ItemDetailFragment.ARG_ITEM_ID), prefMessage.text.toString())
+                        //Here we are putting some value in our Shared Preference
+                        SharedPref(baseContext).putData(uniqueKey, prefMessage.text.toString())
 
                         fragment = ItemDetailFragment().apply {
                             arguments = Bundle().apply {
